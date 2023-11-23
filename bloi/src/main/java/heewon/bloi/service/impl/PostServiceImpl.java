@@ -3,9 +3,13 @@ package heewon.bloi.service.impl;
 import heewon.bloi.entity.Post;
 import heewon.bloi.exception.ResourceNotFoundException;
 import heewon.bloi.payload.PostDto;
+import heewon.bloi.payload.PostResponse;
 import heewon.bloi.repository.PostRepository;
 import heewon.bloi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +34,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+    public PostResponse getAllPosts(int pageSize, int pageNo) {
+        // jpa가 PagingAndSortingRepository를 구현하고 있음.
+        // 거기에 findAll의 파라미터로 Pageable객체가 들어가고, Page를 반환함.
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Post> page = postRepository.findAll(pageable);
+        // Page 객체에서 내용 꺼내기
+        List<Post> listOfPosts = page.getContent();
+        // 커스텀한 PostResponse객체를 넘기기 위해!
+        List<PostDto>  content = listOfPosts.stream().map((post) -> mapToDto(post)).collect(Collectors.toList());
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(page.getNumber());
+        postResponse.setPageSize(page.getSize());
+        postResponse.setTotalElements(page.getTotalElements());
+        postResponse.setTotalPages(page.getTotalPages());
+        postResponse.setLast(page.isLast());
+        return postResponse;
     }
 
     @Override

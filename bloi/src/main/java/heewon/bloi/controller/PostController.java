@@ -1,6 +1,7 @@
 package heewon.bloi.controller;
 
 import heewon.bloi.payload.PostDto;
+import heewon.bloi.payload.PostResponse;
 import heewon.bloi.service.PostService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,11 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostDto> getAllPosts(){
-        return postService.getAllPosts();
+    public PostResponse getAllPosts(
+            @RequestParam(value = "pageSize", defaultValue = "1", required = false) int pageSize,
+            @RequestParam(value = "pageNo", defaultValue = "5", required = false) int pageNo
+    ){
+        return postService.getAllPosts(pageSize, pageNo);
     }
 
     @GetMapping("/{id}")
@@ -43,6 +47,6 @@ public class PostController {
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id){
         postService.deletePostById(id);
         return new ResponseEntity<>("Post entity deleted successfully!", HttpStatus.OK);
-
     }
+
 }
