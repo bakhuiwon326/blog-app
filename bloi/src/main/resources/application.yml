@@ -1,0 +1,13 @@
+spring:
+  config:
+    import: env.properties
+  datasource:
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+server:
+  port: 8080
