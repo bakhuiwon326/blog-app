@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,10 +35,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getAllPosts(int pageSize, int pageNo) {
+    public PostResponse getAllPosts(int pageSize, int pageNo, String sortBy, String sortDir) {
         // jpa가 PagingAndSortingRepository를 구현하고 있음.
         // 거기에 findAll의 파라미터로 Pageable객체가 들어가고, Page를 반환함.
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Post> page = postRepository.findAll(pageable);
         // Page 객체에서 내용 꺼내기
         List<Post> listOfPosts = page.getContent();
