@@ -1,14 +1,14 @@
 package heewon.bloi.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data // @RequiredArgsContructor 포함됨
+//@Data // @RequiredArgsContructor 포함됨. @Data를 주석친 이유? Data에 toString 때문에 stack overflow 발생했음.
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
