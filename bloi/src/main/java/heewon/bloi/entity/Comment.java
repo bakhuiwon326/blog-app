@@ -1,6 +1,7 @@
 package heewon.bloi.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 //@Data
@@ -14,6 +15,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotEmpty(message = "Comment ")
     private String name;
     private String email;
     private String body;
