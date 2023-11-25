@@ -1,9 +1,12 @@
 package heewon.bloi.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -18,6 +21,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity // -> 내부적으로 pre authorize, post authorize, pre filter, post filter 어노테이션 포함됨
 public class SecurityConfig {
 
+    private UserDetailsService userDetailsService;
+
+    public SecurityConfig(@Qualifier("customUserDetailsService") UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
     @Bean
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -37,19 +50,20 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userService(){
-        // 여기에 등록된 사람만 로그인 허용
-        UserDetails bloi = User.builder()
-                .username("bloi")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(bloi,admin);
-    }
+    // in memory
+//    @Bean
+//    public UserDetailsService userService(){
+//        // 여기에 등록된 사람만 로그인 허용
+//        UserDetails bloi = User.builder()
+//                .username("bloi")
+//                .password(passwordEncoder().encode("1234"))
+//                .roles("USER")
+//                .build();
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(passwordEncoder().encode("admin"))
+//                .roles("ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(bloi,admin);
+//    }
 }

@@ -3,6 +3,7 @@ package heewon.bloi.controller;
 import heewon.bloi.payload.CommentDto;
 import heewon.bloi.service.CommentService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 public class CommentController {
     private CommentService commentService;
 
-    public CommentController(CommentService commentService) {
+    public CommentController(@Qualifier("commentServiceImpl") CommentService commentService) {
         this.commentService = commentService;
     }
 
