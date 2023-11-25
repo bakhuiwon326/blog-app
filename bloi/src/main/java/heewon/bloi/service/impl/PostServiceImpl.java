@@ -36,7 +36,7 @@ public class PostServiceImpl implements PostService {
         PostDto postResponse = mapToDto(newPost);
         return postResponse;
     }
-
+    
     @Override
     public PostResponse getAllPosts(int pageSize, int pageNo, String sortBy, String sortDir) {
         // jpa가 PagingAndSortingRepository를 구현하고 있음.
