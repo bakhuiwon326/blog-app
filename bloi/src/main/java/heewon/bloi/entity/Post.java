@@ -28,4 +28,7 @@ public class Post {
     // orphanRemoval: REMOVE될 때, 부모를 삭제하면 자식도 논리적으로 삭제됨. 실제 데이터는 남음. 고아 데이터들을 자동으로 삭제시켜주는 옵션
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
