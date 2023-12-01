@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController // @Controller와 @ResponseBody가 내부적으로 있음
 @RequestMapping("/api/posts")
 public class PostController {
@@ -55,4 +57,9 @@ public class PostController {
         return new ResponseEntity<>("Post entity deleted successfully!", HttpStatus.OK);
     }
 
+    @GetMapping("/category/{id}")
+    public ResponseEntity<List<PostDto>> getPostsByCategoryId(@PathVariable(name = "id") long categoryId){
+        List<PostDto> postDtos = postService.getPostsByCategoryId(categoryId);
+        return new ResponseEntity<>(postDtos, HttpStatus.OK);
+    }
 }
