@@ -4,6 +4,8 @@ import heewon.bloi.payload.JWTAuthResponse;
 import heewon.bloi.payload.LoginDto;
 import heewon.bloi.payload.RegisterDto;
 import heewon.bloi.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,14 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @Operation(
+            summary = "Login REST API",
+            description = "Login REST API is used to login"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
     @PostMapping(value = {"/login", "/signin"})
     public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto){
         String jwt = authService.login(loginDto);
@@ -31,6 +41,14 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Signup REST API",
+            description = "Signup REST API is used to signup"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
     @PostMapping(value = {"/register", "signup"})
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto){
         String response = authService.register(registerDto);

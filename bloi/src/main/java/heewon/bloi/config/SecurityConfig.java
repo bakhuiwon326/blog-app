@@ -53,6 +53,8 @@ public class SecurityConfig {
                     //authorize.anyRequest().authenticated(); // 모든 사용자의 어떤 요청이든 허용
                     authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll() // 모든 사용자의 GET 요청 중 /api/** 만 허용. 나머진 인증/인가 과정 거쳐야함.
                             .requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers("/swagger-ui/**").permitAll()
+                            .requestMatchers("/v3/api-docs/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
